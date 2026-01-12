@@ -21,16 +21,7 @@ load_dotenv(BASE_DIR / ".env")
 # ======================
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-temp-key")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
-
-if DEBUG:
-    ALLOWED_HOSTS = [
-        "127.0.0.1",
-        "localhost",
-    ]
-else:
-    ALLOWED_HOSTS = [
-        "testproject-8da4.onrender.com",
-    ]
+ALLOWED_HOSTS = [testproject-8da4.onrender.com "127.0.0.1", "localhost"] if DEBUG else []
 
 
 # ======================
