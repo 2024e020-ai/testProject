@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}タイムライン{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">タイムライン</h2>
+
+<!-- 検索フォーム -->
+<form class="d-flex mb-4" method="GET" action="{% url 'timeline' %}">
+  <input class="form-control me-2" type="search" placeholder="検索"
+         name="q" value="{{ query }}">
+  <button class="btn btn-outline-success" type="submit">検索</button>
+</form>
+
+<!-- 検索結果表示 -->
+{% if query %}
+  <h3>「{{ query }}」の検索結果</h3>
+{% endif %}
+
+<!-- 投稿一覧 -->
+{% for post in posts %}
+<div class="card mb-3 post" data-post-id="{{ post.id }}">
+  <div class="card-body">
+    <h5 class="card-title">{{ post.title }}</h5>
+    <p class="card-text">{{ post.content|truncatechars:100 }}</p>
+    <p class="card-text">
+      <small class="text-muted">{{ post.author.username }} | {{ post.created_at }}</small>
+    </p>
+    <a href="{% url 'post_detail' post.pk %}" class="btn btn-primary btn-sm">詳細</a>
+
+    <!-- いいねボタン -->
+    <button class="btn btn-outline-primary like-btn mt-2" data-pk="{{ post.pk }}">
+      {% if user in post.likes.all %}
+        ❤️ いいね
+      {% else %}
+        🤍 いいね
+      {% endif %}
+    </button>
+    <!-- いいね数表示 -->
+    <span id="like-count-{{ post.pk }}" class="ms-2">{{ post.total_likes }}</span>
+  </div>
+</div>
+{% empty %}
+<p>該当する投稿はありませんでした。</p>
+{% endfor %}
+
+<!-- 非同期いいね用スクリプト -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const likeBtns = document.querySelectorAll('.like-btn');
+
+    likeBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const postId = this.dataset.pk;
+            const url = `/post/${postId}/like/`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // いいね数を更新
+                const countSpan = document.getElementById(`like-count-${postId}`);
+                if (countSpan) {
+                    countSpan.textContent = data.count;
+                }
+
+                // ボタン表示を更新
+                if (data.liked) {
+                    this.textContent = ' ❤️ いいね';
+                } else {
+                    this.textContent = ' 🤍 いいね';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('いいねの処理に失敗しました。ログイン状態を確認してください。');
+            });
+        });
+    });
+});
+</script>
+
+{% endblock %}

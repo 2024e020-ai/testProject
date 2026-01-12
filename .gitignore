@@ -1,0 +1,17 @@
+# 仮想環境・環境変数
+venv/
+.env
+
+# 静的ファイル（collectstatic）
+staticfiles/
+
+# エディタ・OS依存
+.vscode/
+.idea/
+.DS_Store
+
+# Django / Python
+db.sqlite3
+*.log
+__pycache__/
+*.pyc

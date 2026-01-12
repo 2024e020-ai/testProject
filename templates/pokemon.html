@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ポケモン情報</title>
+</head>
+<body>
+    <h1>ポケモン情報検索</h1>
+
+    <!-- ポケモン選択フォーム -->
+    <form method="get" action="">
+        <label for="name">ポケモンの名前:</label>
+        <input type="text" id="name" name="name" value="{{ name }}">
+        <button type="submit">検索</button>
+    </form>
+
+    <hr>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        <h2>{{ name|title }}</h2>
+        {% if image %}
+            <img src="{{ image }}" alt="{{ name }}">
+        {% endif %}
+        <p><strong>タイプ:</strong> {{ types|join:", " }}</p>
+        <p><strong>高さ:</strong> {{ height }} dm</p>
+        <p><strong>重さ:</strong> {{ weight }} hg</p>
+    {% endif %}
+</body>
+</html>
