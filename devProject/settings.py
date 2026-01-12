@@ -29,7 +29,7 @@ if DEBUG:
     ]
 else:
     ALLOWED_HOSTS = [
-        "testproject-ptxu.onrender.com",
+        "testproject-8da4.onrender.com",
     ]
 
 
