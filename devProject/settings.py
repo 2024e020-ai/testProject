@@ -20,13 +20,13 @@ load_dotenv(BASE_DIR / ".env")
 # セキュリティ設定
 # ======================
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-# DEBUG=False でも 400 Bad Request を防ぐため明示的に指定
+# ローカル + 本番（Render想定）
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
+    "testproject-8da4.onrender.com",
 ]
 
 # ======================
