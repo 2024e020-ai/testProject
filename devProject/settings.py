@@ -19,11 +19,15 @@ load_dotenv(BASE_DIR / ".env")
 # ======================
 # セキュリティ設定
 # ======================
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-temp-key")
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"] if DEBUG else []
-
+# DEBUG=False でも 400 Bad Request を防ぐため明示的に指定
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+]
 
 # ======================
 # Application definition
@@ -82,7 +86,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "devProject.wsgi.application"
 
-
 # ======================
 # Database
 # ======================
@@ -93,17 +96,23 @@ DATABASES = {
     }
 }
 
-
 # ======================
 # Password validation
 # ======================
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"
+    },
 ]
-
 
 # ======================
 # Internationalization
@@ -113,19 +122,16 @@ TIME_ZONE = "Asia/Tokyo"
 USE_I18N = True
 USE_TZ = True
 
-
 # ======================
 # Static files
 # ======================
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
 # ======================
 # Default primary key field type
 # ======================
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 # ======================
 # 認証関連
@@ -133,7 +139,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
-
 
 # ======================
 # Debug Toolbar
